@@ -38,19 +38,17 @@ class TaskListViewController: UIViewController {
         title = "Tasks"
         view.backgroundColor = .systemBackground
         
-        // Navigation Bar Setup
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
-        // QR Code Scanner Button
         let scanButton = UIBarButtonItem(image: UIImage(systemName: "qrcode.viewfinder"),
                                        style: .plain,
                                        target: self,
                                        action: #selector(scanQRCodeTapped))
         navigationItem.rightBarButtonItem = scanButton
         
-        // TableView Setup
+       
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -62,11 +60,11 @@ class TaskListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Pull to Refresh
+       
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         tableView.refreshControl = refreshControl
         
-        // Search Controller
+        
         searchController.searchResultsUpdater = self
     }
     

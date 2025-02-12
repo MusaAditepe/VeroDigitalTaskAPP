@@ -14,7 +14,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        // CoreData'yı başlat
         _ = CoreDataManager.shared.persistentContainer
         
         let window = UIWindow(windowScene: windowScene)
@@ -26,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
-        // CoreData değişikliklerini kaydet
         try? CoreDataManager.shared.context.save()
     }
 }

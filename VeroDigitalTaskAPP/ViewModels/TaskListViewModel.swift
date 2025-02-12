@@ -19,7 +19,6 @@ class TaskListViewModel {
     }
     
     init() {
-        // Başlangıçta kayıtlı görevleri yükle
         loadSavedTasks()
     }
     
@@ -57,7 +56,6 @@ class TaskListViewModel {
             case .success(let tasks):
                 self?.tasks = tasks
                 self?.filteredTasks = tasks
-                // Görevleri CoreData'ya kaydet
                 CoreDataManager.shared.saveTasks(tasks)
                 DispatchQueue.main.async {
                     self?.onTasksUpdated?()
