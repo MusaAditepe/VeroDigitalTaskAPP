@@ -81,7 +81,6 @@
 				AF782FC62D5CDCD600660970 /* Views */,
 				AF782FC52D5CDCD000660970 /* Services */,
 				AF782FC42D5CDCC700660970 /* Utils */,
-				AF782FC32D5CDCBC00660970 /* Resources */,
 				AF782FAC2D5CDCA900660970 /* AppDelegate.swift */,
 				AF782FAE2D5CDCA900660970 /* SceneDelegate.swift */,
 				AF782FB02D5CDCA900660970 /* ViewController.swift */,
@@ -92,13 +91,6 @@
 				AF782FDC2D5CDE9F00660970 /* TaskModel.xcdatamodeld */,
 			);
 			path = VeroDigitalTaskAPP;
-			sourceTree = "<group>";
-		};
-		AF782FC32D5CDCBC00660970 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		AF782FC42D5CDCC700660970 /* Utils */ = {
