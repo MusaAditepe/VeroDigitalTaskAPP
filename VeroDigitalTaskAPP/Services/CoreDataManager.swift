@@ -27,42 +27,45 @@ class CoreDataManager {
     }
     
     func saveTasks(_ tasks: [Task]) {
-        // Önce mevcut görevleri temizle
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TaskEntity.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        do {
-            try context.execute(deleteRequest)
+        context.performAndWait {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TaskEntity.fetchRequest()
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             
-            // Yeni görevleri kaydet
-            tasks.forEach { task in
-                let taskEntity = TaskEntity(context: context)
-                taskEntity.task = task.task
-                taskEntity.title = task.title
-                taskEntity.taskDescription = task.description
-                taskEntity.colorCode = task.colorCode
+            do {
+                try context.execute(deleteRequest)
+                
+                tasks.forEach { task in
+                    let taskEntity = TaskEntity(context: context)
+                    taskEntity.task = task.task
+                    taskEntity.title = task.title
+                    taskEntity.taskDescription = task.description
+                    taskEntity.colorCode = task.colorCode
+                }
+                
+                try context.save()
+            } catch {
+                print("Error saving tasks: \(error)")
             }
-            
-            try context.save()
-        } catch {
-            print("Error saving tasks: \(error)")
         }
     }
     
     func fetchTasks() -> [Task] {
-        let fetchRequest: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
-        
-        do {
-            let taskEntities = try context.fetch(fetchRequest)
-            return taskEntities.map { entity in
-                Task(task: entity.task,
-                     title: entity.title,
-                     description: entity.taskDescription,
-                     colorCode: entity.colorCode)
+        var tasks: [Task] = []
+        context.performAndWait {
+            let fetchRequest: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
+            
+            do {
+                let taskEntities = try context.fetch(fetchRequest)
+                tasks = taskEntities.map { entity in
+                    Task(task: entity.task,
+                         title: entity.title,
+                         description: entity.taskDescription,
+                         colorCode: entity.colorCode)
+                }
+            } catch {
+                print("Error fetching tasks: \(error)")
             }
-        } catch {
-            print("Error fetching tasks: \(error)")
-            return []
         }
+        return tasks
     }
 }

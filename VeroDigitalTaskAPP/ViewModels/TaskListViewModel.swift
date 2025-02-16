@@ -27,8 +27,8 @@ class TaskListViewModel {
         if !savedTasks.isEmpty {
             self.tasks = savedTasks
             self.filteredTasks = savedTasks
-            DispatchQueue.main.async {
-                self.onTasksUpdated?()
+            DispatchQueue.main.async { [weak self] in
+                self?.onTasksUpdated?()
             }
         }
     }
@@ -39,12 +39,13 @@ class TaskListViewModel {
     
     func fetchTasks() {
         NetworkManager.shared.authenticate { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success:
-                self?.fetchTasksList()
+                self.fetchTasksList()
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.onError?(error.localizedDescription)
+                    self.onError?(error.localizedDescription)
                 }
             }
         }
@@ -52,17 +53,18 @@ class TaskListViewModel {
     
     private func fetchTasksList() {
         NetworkManager.shared.fetchTasks { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let tasks):
-                self?.tasks = tasks
-                self?.filteredTasks = tasks
+                self.tasks = tasks
+                self.filteredTasks = tasks
                 CoreDataManager.shared.saveTasks(tasks)
                 DispatchQueue.main.async {
-                    self?.onTasksUpdated?()
+                    self.onTasksUpdated?()
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self?.onError?(error.localizedDescription)
+                    self.onError?(error.localizedDescription)
                 }
             }
         }
